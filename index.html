@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aemitez_Dev: Freelance Service Analytics</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Palette: Cyber Tech -->
+    <!-- 
+        Primary: #3a0ca3 (Deep Purple/Blue)
+        Secondary: #4361ee (Vibrant Blue)
+        Accent: #f72585 (Hot Pink)
+        Highlight: #4cc9f0 (Cyan)
+        Background: #f8f9fa (Light Gray)
+        Surface: #ffffff (White)
+    -->
+
+    <style>
+        body {
+            font-family: 'Kanit', 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #1f2937;
+        }
+        
+        /* Chart Container Strict Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px; /* Base height */
+            max-height: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Custom Bullet for lists */
+        .custom-bullet::before {
+            content: "•";
+            color: #f72585;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        /* Process Flow Connector Lines (CSS Only, No SVG) */
+        .step-connector {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 2rem;
+            height: 2px;
+            background-color: #4cc9f0;
+            z-index: 0;
+            transform: translateY(-50%);
+        }
+        @media (max-width: 768px) {
+            .step-connector {
+                top: 100%;
+                left: 50%;
+                width: 2px;
+                height: 2rem;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+    <!-- 
+        NARRATIVE PLAN:
+        1. Header: Introduction to Aemitez_Dev as a premium service provider.
+        2. Tech Stack (Radar): Showing the "Full-Stack" capability visually.
+        3. Service Matrix (Bubble): Helping clients understand the Time vs Cost tradeoff.
+        4. Target Audience (Doughnut): Social proof of who hires this service.
+        5. Quality Metrics (Polar Area): Visualizing intangible benefits like SEO and Speed.
+        6. Workflow (HTML Steps): Professional process visualization.
+        7. Call to Action: Fastwork link.
+        
+        VISUALIZATION CHOICES (NO SVG):
+        - Tech Stack -> Radar Chart: Best for comparing multiple skill variables.
+        - Services -> Bubble Chart: Excellent for 3D data (Cost, Time, Complexity).
+        - Audience -> Doughnut Chart: Clear part-to-whole relationship.
+        - KPIs -> Polar Area Chart: Engaging way to show qualitative scoring.
+    -->
+</head>
+<body class="antialiased">
+
+    <!-- Header / Hero Section -->
+    <header class="bg-gradient-to-r from-[#3a0ca3] to-[#4361ee] text-white shadow-lg">
+        <div class="container mx-auto px-4 py-12 md:py-16 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Aemitez_Dev</h1>
+            <p class="text-xl md:text-2xl font-light text-[#4cc9f0] mb-6">Modern Web Solutions & Analytics</p>
+            <div class="max-w-3xl mx-auto bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                <p class="text-lg leading-relaxed">
+                    ยกระดับธุรกิจด้วยเว็บไซต์คุณภาพสูง พัฒนาด้วยเทคโนโลยีระดับโลก (React/Next.js) 
+                    บทวิเคราะห์ข้อมูลบริการด้านล่างนี้แสดงให้เห็นว่าทำไมผมถึงเป็นตัวเลือกที่ดีที่สุดสำหรับโปรเจกต์ของคุณ
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12 space-y-16">
+
+        <!-- Section 1: Tech Stack Analysis -->
+        <section>
+            <div class="mb-8 border-l-4 border-[#f72585] pl-4">
+                <h2 class="text-3xl font-bold text-[#3a0ca3]">ขุมพลังเทคโนโลยี (Tech Stack)</h2>
+                <p class="text-gray-600 mt-2 text-lg">
+                    การเลือกใช้เทคโนโลยีที่ทันสมัยส่งผลโดยตรงต่อความเร็วและความเสถียรของเว็บไซต์ 
+                    แผนภาพนี้แสดงระดับความเชี่ยวชาญในแต่ละเครื่องมือที่ผมใช้ในการส่งมอบงานคุณภาพระดับสากล
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Chart Card -->
+                <div class="card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#4cc9f0]">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Skill Proficiency Radar</h3>
+                    <div class="chart-container">
+                        <canvas id="techStackChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Context Card -->
+                <div class="card bg-white rounded-xl shadow-md p-8 h-full flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-[#4361ee] mb-4">Why Next.js & React?</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        ผมเน้นใช้ <strong>Next.js และ React</strong> ซึ่งเป็นผู้นำตลาดในปัจจุบัน 
+                        แตกต่างจากฟรีแลนซ์ทั่วไปที่อาจใช้เทคโนโลยีเก่า ผลลัพธ์ที่ได้คือเว็บไซต์ที่โหลดเร็วกว่า 
+                        ติดอันดับ Google (SEO) ได้ง่ายกว่า และรองรับการขยายตัวในอนาคต
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-[#f72585] mr-3"></span>
+                            <span class="font-medium text-gray-700">Frontend: React, Tailwind CSS</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-[#4361ee] mr-3"></span>
+                            <span class="font-medium text-gray-700">Backend: Node.js, Express</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-[#4cc9f0] mr-3"></span>
+                            <span class="font-medium text-gray-700">Database: MongoDB, SQL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Service Packages Matrix -->
+        <section>
+            <div class="mb-8 border-l-4 border-[#4361ee] pl-4">
+                <h2 class="text-3xl font-bold text-[#3a0ca3]">วิเคราะห์แพ็กเกจบริการ (Service Matrix)</h2>
+                <p class="text-gray-600 mt-2 text-lg">
+                    เปรียบเทียบความสัมพันธ์ระหว่าง "งบประมาณ" "ระยะเวลา" และ "ความซับซ้อน" ของงาน 
+                    เพื่อช่วยให้คุณตัดสินใจเลือกแพ็กเกจที่คุ้มค่าและตอบโจทย์ธุรกิจที่สุด
+                </p>
+            </div>
+
+            <div class="card bg-white rounded-xl shadow-md p-6 border-t-4 border-[#f72585]">
+                <div class="chart-container" style="max-width: 800px; height: 450px;">
+                    <canvas id="packageChart"></canvas>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-500">
+                    * ขนาดวงกลมแสดงถึงความซับซ้อนของระบบ (Complexity Scale)
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                    <h4 class="font-bold text-[#3a0ca3]">Landing Page</h4>
+                    <p class="text-sm text-gray-600 mt-1">เหมาะสำหรับยิงโฆษณา สร้างยอดขายด่วน</p>
+                    <div class="mt-4 font-bold text-[#f72585]">฿3,500 - ฿5,000</div>
+                    <div class="text-xs text-gray-500">3-5 วัน</div>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                    <h4 class="font-bold text-[#3a0ca3]">Official Website</h4>
+                    <p class="text-sm text-gray-600 mt-1">สร้างความน่าเชื่อถือให้บริษัท</p>
+                    <div class="mt-4 font-bold text-[#f72585]">฿8,000 - ฿15,000</div>
+                    <div class="text-xs text-gray-500">7-10 วัน</div>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                    <h4 class="font-bold text-[#3a0ca3]">Web Application</h4>
+                    <p class="text-sm text-gray-600 mt-1">ระบบหลังบ้าน ระบบสมาชิก เต็มรูปแบบ</p>
+                    <div class="mt-4 font-bold text-[#f72585]">฿20,000++</div>
+                    <div class="text-xs text-gray-500">15-30 วัน</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Target Audience & KPIs -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Target Audience -->
+            <div>
+                <div class="mb-6 border-l-4 border-[#4cc9f0] pl-4">
+                    <h2 class="text-2xl font-bold text-[#3a0ca3]">ลูกค้าของผมคือใคร?</h2>
+                    <p class="text-gray-600 mt-2">
+                        สัดส่วนกลุ่มลูกค้าที่ไว้วางใจใช้บริการ ส่วนใหญ่คือ SME และ Startup ที่ต้องการความคล่องตัว
+                    </p>
+                </div>
+                <div class="card bg-white rounded-xl shadow-md p-6">
+                    <div class="chart-container">
+                        <canvas id="audienceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPIs -->
+            <div>
+                <div class="mb-6 border-l-4 border-[#f72585] pl-4">
+                    <h2 class="text-2xl font-bold text-[#3a0ca3]">จุดแข็งที่แตกต่าง (Key Strengths)</h2>
+                    <p class="text-gray-600 mt-2">
+                        ทำไมต้องจ้าง Aemitez_Dev? นี่คือคะแนนดัชนีชี้วัดคุณภาพงานที่ผมให้ความสำคัญสูงสุด
+                    </p>
+                </div>
+                <div class="card bg-white rounded-xl shadow-md p-6">
+                    <div class="chart-container">
+                        <canvas id="kpiChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Workflow Process -->
+        <section>
+            <div class="mb-10 text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-[#3a0ca3] mb-4">ขั้นตอนการทำงาน (Workflow)</h2>
+                <p class="text-gray-600">
+                    ระบบการทำงานที่เป็นมืออาชีพ ชัดเจน ตรวจสอบได้ทุกขั้นตอน เพื่อให้คุณได้รับงานตรงเวลาและตรงใจที่สุด
+                </p>
+            </div>
+
+            <div class="relative grid grid-cols-1 md:grid-cols-4 gap-6 p-4">
+                <!-- Step 1 -->
+                <div class="relative z-10 card bg-white p-6 rounded-xl border-t-8 border-[#3a0ca3] text-center">
+                    <div class="w-12 h-12 mx-auto bg-[#3a0ca3] text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">1</div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Requirement</h3>
+                    <p class="text-sm text-gray-600">คุยขอบเขตงาน ความต้องการ และ Reference</p>
+                    <!-- Connector line for desktop -->
+                    <div class="hidden md:block step-connector"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 card bg-white p-6 rounded-xl border-t-8 border-[#4361ee] text-center">
+                    <div class="w-12 h-12 mx-auto bg-[#4361ee] text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">2</div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Design & UI</h3>
+                    <p class="text-sm text-gray-600">ออกแบบโครงสร้าง UX/UI และ Theme</p>
+                    <div class="hidden md:block step-connector"></div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 card bg-white p-6 rounded-xl border-t-8 border-[#4cc9f0] text-center">
+                    <div class="w-12 h-12 mx-auto bg-[#4cc9f0] text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">3</div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Development</h3>
+                    <p class="text-sm text-gray-600">เขียนโค้ด พัฒนาระบบ เชื่อมต่อ Database</p>
+                    <div class="hidden md:block step-connector"></div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative z-10 card bg-white p-6 rounded-xl border-t-8 border-[#f72585] text-center">
+                    <div class="w-12 h-12 mx-auto bg-[#f72585] text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">4</div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Delivery</h3>
+                    <p class="text-sm text-gray-600">ส่งมอบงาน สอนใช้งาน และดูแลหลังขาย</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / CTA -->
+        <footer class="mt-16 bg-[#1f2937] text-white py-12 rounded-t-3xl text-center">
+            <h2 class="text-3xl font-bold mb-6 text-[#4cc9f0]">พร้อมยกระดับธุรกิจของคุณหรือยัง?</h2>
+            <p class="text-gray-300 mb-8 max-w-xl mx-auto">
+                อย่าปล่อยให้ไอเดียเป็นแค่ความคิด ทักมาคุยกันครับ ยินดีให้คำปรึกษาฟรี ไม่มีค่าใช้จ่าย
+            </p>
+            <button class="bg-[#f72585] hover:bg-[#d00060] text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg transform transition hover:scale-105 duration-200">
+                จ้างงาน Aemitez_Dev บน Fastwork
+            </button>
+            <p class="mt-8 text-sm text-gray-500">© 2023 Aemitez_Dev Infographic. All Rights Reserved.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- UTILITY: Label Wrapper for Chart.js (>16 chars) ---
+        function wrapLabel(label) {
+            if (typeof label !== 'string' || label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length <= 16) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // --- COMMON TOOLTIP CONFIGURATION ---
+        const commonTooltip = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    // Special handling for Bubble charts where labels might be differently structured
+                    if(!label && item.raw && item.raw.label) label = item.raw.label;
+                    
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // --- PALETTE CONSTANTS ---
+        const colorPrimary = '#3a0ca3';
+        const colorSecondary = '#4361ee';
+        const colorAccent = '#f72585';
+        const colorHighlight = '#4cc9f0';
+
+        // --- CHART 1: Tech Stack Radar ---
+        const ctxTech = document.getElementById('techStackChart').getContext('2d');
+        const techLabels = ["React.js & Next.js", "Node.js & Backend", "Database (SQL/NoSQL)", "Tailwind CSS Design", "SEO Optimization"];
+        const wrappedTechLabels = techLabels.map(wrapLabel);
+
+        new Chart(ctxTech, {
+            type: 'radar',
+            data: {
+                labels: wrappedTechLabels,
+                datasets: [{
+                    label: 'Skill Proficiency Level',
+                    data: [95, 85, 80, 90, 88],
+                    backgroundColor: 'rgba(67, 97, 238, 0.2)', // colorSecondary transparent
+                    borderColor: colorSecondary,
+                    pointBackgroundColor: colorAccent,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: colorAccent
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0,0,0,0.1)' },
+                        grid: { color: 'rgba(0,0,0,0.1)' },
+                        pointLabels: {
+                            font: { size: 12, family: 'Kanit' },
+                            color: '#333'
+                        },
+                        suggestedMin: 50,
+                        suggestedMax: 100
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltip
+                }
+            }
+        });
+
+        // --- CHART 2: Package Matrix (Bubble) ---
+        const ctxPackage = document.getElementById('packageChart').getContext('2d');
+        // Data: x=Days, y=Price, r=Complexity
+        const packageData = [
+            { x: 4, y: 4250, r: 15, label: "Landing Page" },
+            { x: 9, y: 11500, r: 25, label: "Official Website" },
+            { x: 22, y: 25000, r: 40, label: "Web Application" }
+        ];
+
+        new Chart(ctxPackage, {
+            type: 'bubble',
+            data: {
+                datasets: [{
+                    label: 'Service Packages',
+                    data: packageData,
+                    backgroundColor: [colorHighlight, colorSecondary, colorAccent],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Estimated Timeline (Days)', font: {weight: 'bold'} },
+                        min: 0,
+                        max: 35,
+                        grid: { display: false }
+                    },
+                    y: {
+                        title: { display: true, text: 'Starting Price (THB)', font: {weight: 'bold'} },
+                        min: 0,
+                        max: 30000,
+                        ticks: {
+                            callback: function(value) { return '฿' + value.toLocaleString(); }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: function(context) {
+                                return context[0].raw.label;
+                            },
+                            label: function(context) {
+                                return `Price: ฿${context.raw.y.toLocaleString()} | Time: ${context.raw.x} Days`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 3: Target Audience (Doughnut) ---
+        const ctxAudience = document.getElementById('audienceChart').getContext('2d');
+        const audienceLabels = ["SME Business", "Tech Startups", "Online Shops", "Corporate"];
+        
+        new Chart(ctxAudience, {
+            type: 'doughnut',
+            data: {
+                labels: audienceLabels.map(wrapLabel),
+                datasets: [{
+                    data: [40, 30, 20, 10],
+                    backgroundColor: [colorSecondary, colorAccent, colorHighlight, '#2a0975'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { boxWidth: 15, font: {family: 'Kanit'} }
+                    },
+                    tooltip: commonTooltip
+                }
+            }
+        });
+
+        // --- CHART 4: KPIs (Polar Area) ---
+        const ctxKPI = document.getElementById('kpiChart').getContext('2d');
+        const kpiLabels = ["Fast Loading Speed", "Clean Code Structure", "Mobile Responsive", "After-Sales Service", "Modern Design"];
+        
+        new Chart(ctxKPI, {
+            type: 'polarArea',
+            data: {
+                labels: kpiLabels.map(wrapLabel),
+                datasets: [{
+                    data: [10, 9, 10, 9, 9], // Scores out of 10
+                    backgroundColor: [
+                        'rgba(67, 97, 238, 0.7)',
+                        'rgba(76, 201, 240, 0.7)',
+                        'rgba(247, 37, 133, 0.7)',
+                        'rgba(58, 12, 163, 0.7)',
+                        'rgba(67, 97, 238, 0.5)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        ticks: { display: false },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { boxWidth: 15 }
+                    },
+                    tooltip: commonTooltip
+                }
+            }
+        });
+    </script>
+</body>
+</html>
